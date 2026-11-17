@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard · Top Gaming</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="https://res.cloudinary.com/dlgwd3dsq/image/upload/v1780847852/file_000000003adc720eb0f9d6399dffcbd4_4_tazjf5.png">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Chakra Petch',sans-serif;background:#0a0a0a;color:#fff;padding-bottom:40px}
+header{display:flex;justify-content:space-between;align-items:center;padding:6px 20px;background:#000;position:sticky;top:0;z-index:10;border-bottom:1px solid #222}
+header img{height:60px}
+main{max-width:1100px;margin:0 auto;padding:20px}
+.tabs{display:flex;gap:8px;margin-bottom:20px}
+.tab{padding:9px 18px;border-radius:20px;border:1px solid #00ffe159;background:transparent;color:#eaeaea;font:inherit;cursor:pointer}
+.tab.on{background:#00ffe1d9;color:#000;box-shadow:0 0 8px #00ffe173}
+.card{background:#1a1a1a;border:1px solid #444;border-radius:10px;padding:16px;margin-bottom:20px}
+h2{color:#00ffff;font-size:18px;margin-bottom:12px}
+form{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+label{font-size:13px;color:#bbb;display:flex;flex-direction:column;gap:4px}
+input,select,textarea{background:#111;border:1px solid #444;border-radius:8px;color:#fff;padding:10px;font:inherit;font-size:15px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:#00ffff}
+.full{grid-column:1/-1}
+button.b{background:#ff6a00;color:#000;border:none;border-radius:8px;padding:10px 16px;font:inherit;font-weight:700;cursor:pointer}
+button.b.sec{background:transparent;color:#00ffe1;border:1px solid #00ffe1}
+button.b.del{background:transparent;color:#ff5a5a;border:1px solid #ff5a5a;padding:5px 10px}
+button.b.ed{background:transparent;color:#00ffe1;border:1px solid #00ffe1;padding:5px 10px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.prev{width:80px;height:80px;object-fit:contain;background:#0f0f0f;border-radius:8px}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:8px;border-bottom:1px solid #2a2a2a;text-align:left;white-space:nowrap}
+td img{width:40px;height:40px;object-fit:contain;vertical-align:middle}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.kpi{background:#1a1a1a;border:1px solid #444;border-radius:10px;padding:14px}
+.kpi small{color:#bbb}.kpi b{display:block;font-size:22px;margin-top:4px}
+.pos{color:#00ffcc}.neg{color:#ff5a5a}
+.chart{display:flex;align-items:flex-end;gap:4px;height:160px;overflow-x:auto;padding-top:10px}
+.col{flex:1;min-width:18px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;font-size:10px;color:#999}
+.col div{display:flex;align-items:flex-end;gap:2px;height:130px;width:100%}
+.col i{flex:1;display:block;border-radius:3px 3px 0 0;min-height:1px}
+#login{max-width:340px;margin:80px auto;text-align:center}
+#login form{grid-template-columns:1fr}
+.err{color:#ff5a5a;font-size:14px;margin-top:8px}
+@media(max-width:600px){.kpis{grid-template-columns:1fr}.kpi b{font-size:19px}}
+</style></head>
+<body>
+<header><img src="https://res.cloudinary.com/dlgwd3dsq/image/upload/v1759531309/TopGaming_logo_superior_ecyw9c.png" alt="Top Gaming"><button class="b sec" id="salir" hidden>Salir</button></header>
+
+<main id="login" class="card">
+  <h2>Ingresar al dashboard</h2>
+  <form id="fLogin"><label>Email<input id="em" type="email" required></label><label>Contraseña<input id="pw" type="password" required></label><button class="b">Ingresar</button></form>
+  <p class="err" id="lerr"></p>
+</main>
+
+<main id="app" hidden>
+  <div class="tabs"><button class="tab on" data-t="prod">Productos</button><button class="tab" data-t="bal">Balance</button></div>
+
+  <section id="prod">
+    <div class="card"><h2 id="ftitle">Nuevo producto</h2>
+      <form id="fProd">
+        <label>Nombre<input id="nombre" required></label>
+        <label>Categoría<select id="categoria" required></select></label>
+        <label>Precio<input id="precio" type="number" min="0" step="any" required></label>
+        <label>Precio en efectivo (opcional)<input id="precioEfectivo" type="number" min="0" step="any"></label>
+        <label>Costo (para balance)<input id="costo" type="number" min="0" step="any"></label>
+        <label>Stock<input id="stock" type="number" min="0" step="1" value="1" required></label>
+        <label class="full">URL de la imagen<input id="imagen" type="url" placeholder="https://..." required></label>
+        <div class="full row"><img class="prev" id="prev" alt="" hidden><label style="flex:1;min-width:200px">Descripción<textarea id="descripcion" rows="3"></textarea></label></div>
+        <div class="full row"><button class="b">Guardar producto</button><button type="button" class="b sec" id="cancel" hidden>Cancelar edición</button><span id="pmsg"></span></div>
+      </form></div>
+    <div class="card"><div class="row"><h2 style="margin:0;flex:1">Productos cargados (<span id="cnt">0</span>)</h2>
+      <select id="fcat"></select><button class="b sec" id="csvProd">Descargar CSV</button></div>
+      <div class="tw"><table><thead><tr><th></th><th>Nombre</th><th>Categoría</th><th>Precio</th><th>Stock</th><th></th></tr></thead><tbody id="tb"></tbody></table></div></div>
+  </section>
+
+  <section id="bal" hidden>
+    <div class="row"><select id="per"><option value="w">Semana actual</option><option value="m" selected>Mes actual</option><option value="y">Año actual</option></select>
+      <button class="b sec" id="csvBal">Descargar balance CSV</button></div>
+    <div class="kpis"><div class="kpi"><small>Ingresos</small><b class="pos" id="kIn">$0</b></div><div class="kpi"><small>Gastos</small><b class="neg" id="kOut">$0</b></div><div class="kpi"><small>Balance</small><b id="kBal">$0</b></div></div>
+    <div class="card"><h2>Ingresos y gastos <small style="color:#999;font-size:12px">(verde ingresos, rojo gastos)</small></h2><div class="chart" id="chart"></div></div>
+    <div class="card"><h2>Nuevo movimiento</h2>
+      <form id="fMov">
+        <label>Tipo<select id="tipo"><option value="ingreso">Ingreso</option><option value="gasto">Gasto</option></select></label>
+        <label>Monto<input id="monto" type="number" min="0" step="any" required></label>
+        <label>Fecha<input id="fecha" type="date" required></label>
+        <label>Concepto<input id="concepto" placeholder="Venta, alquiler, compra de stock…" required></label>
+        <div class="full"><button class="b">Guardar movimiento</button></div>
+      </form></div>
+    <div class="card"><h2>Movimientos del período</h2><div class="tw"><table><thead><tr><th>Fecha</th><th>Tipo</th><th>Concepto</th><th>Monto</th><th></th></tr></thead><tbody id="tm"></tbody></table></div></div>
+  </section>
+</main>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { getFirestore, collection, getDocs, addDoc, setDoc, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyCs7_ChkZMxbhsy1ZxiZbvL8jF0XQd4VgI",
+  authDomain: "topgaming-3b378.firebaseapp.com",
+  projectId: "topgaming-3b378",
+  storageBucket: "topgaming-3b378.firebasestorage.app",
+  messagingSenderId: "146243956092",
+  appId: "1:146243956092:web:1cc1c0dd3d75b6bbfc88f9"
+};
+const CATS = [{"s":"tarjeta grafica","n":"Tarjetas Graficas","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1759876173/hardware_vkmdf1.jpg"},{"s":"procesadores","n":"Procesadores","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1759876272/procesadores_mthwyl.jpg"},{"s":"teclado","n":"Teclados","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1759876967/3befb271101af2047238ca1441f7093a_zixh0x.jpg"},{"s":"memoria ram","n":"Memoria Ram","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1759876968/af72fe589dae7efc03954e2ce6ea5af8_du733t.jpg"},{"s":"motherboard","n":"Motherboard","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1759876968/dac7ab0cba38927274574d1ee7384e82_wg2jrk.jpg"},{"s":"mouse","n":"Mouse","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1759876969/2a1486a8e7c84836e19efad981bf4043_c8yoxo.jpg"},{"s":"joysticks","n":"Joystick","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1759937845/2b7f94bec77968b4d695e9623d5ec699_cxm7bu.jpg"},{"s":"notebooks","n":"Notebooks","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1759937868/c9859714f6d488ec3b7a3489e9294d99_gsnkgh.jpg"},{"s":"monitores","n":"Monitores","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1759937869/c231797fca8a424bd3643bc6016ee9a4_yyirnb.jpg"},{"s":"audio","n":"Auriculares","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1759937869/ae180a4d5beb2b02d92cd05b6e6565f5_w0kmcc.jpg"},{"s":"gabinetes","n":"Gabinetes","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1759937869/058c21bc0382258608f6b96c989bb20e_u620kr.jpg"},{"s":"refrigeracion","n":"Refrigeracion","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1764201087/e7484d877a3c767405b3929859c24537_ozav84.jpg"},{"s":"almacenamiento","n":"Almacenamiento","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1764279996/00d0dd0b1a0359bb77dc6622621301de_cpwg7v.jpg"},{"s":"computadoras","n":"Computadoras","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1768666642/4489306ccaa1d994eb7ce20d18b352fa_yomrik.jpg"},{"s":"gaming","n":"Gaming","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1768666655/7c6c3e4698685ea6e661a6e46e585d13_wy7jqd.jpg"},{"s":"smartwatch","n":"Smart Watch","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1768667993/bd8d8f287d5004397afc6b29a74f1f51_xj24nl.jpg"},{"s":"hardware","n":"Hardware","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1774882548/21eb9999a1ce6e39e01b62f306107263_roh7cd.jpg"},{"s":"imagen","n":"Imagen","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1774882534/6a6eafd7d49ccf13cd1a5fa991552423_fodw08.jpg"},{"s":"cables","n":"Cables","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1774882542/43b9d80acb8e994fdaeeeb13c223a234_bark1k.jpg"},{"s":"conectividad","n":"Conectividad","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1768666655/7c6c3e4698685ea6e661a6e46e585d13_wy7jqd.jpg"},{"s":"energia","n":"Energia","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1768667107/6d0a9e031b180c31addc0f1a98e668b3_w97hvs.jpg"},{"s":"impresion","n":"impresión","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1768667298/4a34edf685cb08c5f17d92093b11d03f_tjy8va.jpg"},{"s":"seguridad","n":"Seguridad","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1768667975/72068838176cc3993741f48158c38f9e_z1xgid.jpg"},{"s":"herramientas","n":"Herramientas","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1768668004/0e37e7bba4b33836214512ed03c0a244_qog3br.jpg"},{"s":"outlet","n":"Outlet","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1774647631/172de23d0f62554ff8de02ff7f702c4a_vowf4s.jpg"},{"s":"perifericos","n":"Perifericos","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1774646955/00edf234cf09a2f202bfe26aa1ae14a5_hmx6qb.jpg"},{"s":"telefonia","n":"Telefonia","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1774646579/ec1cf9849918de03ce0c828d75aacda4_k1os76.jpg"},{"s":"varios","n":"Varios","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1774647306/c8d451d821ae5e76f88b89227f099e1d_v9g1nm.jpg"}];
+const app = initializeApp(firebaseConfig), auth = getAuth(app), db = getFirestore(app);
+const $ = id => document.getElementById(id);
+const money = n => (n < 0 ? "-$" : "$") + Math.abs(Math.round(n * 100) / 100).toLocaleString("es-AR");
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const catName = s => (CATS.find(c => c.s === s) || { n: s }).n;
+let prods = [], movs = [], editId = null;
+
+/* ---------- acceso ---------- */
+$("fLogin").onsubmit = async e => {
+  e.preventDefault(); $("lerr").textContent = "";
+  try { await signInWithEmailAndPassword(auth, $("em").value, $("pw").value); }
+  catch { $("lerr").textContent = "Email o contraseña incorrectos."; }
+};
+$("salir").onclick = () => signOut(auth);
+onAuthStateChanged(auth, u => {
+  $("login").hidden = !!u; $("app").hidden = !u; $("salir").hidden = !u;
+  if (u) loadAll();
+});
+document.querySelectorAll(".tab").forEach(b => b.onclick = () => {
+  document.querySelectorAll(".tab").forEach(x => x.classList.toggle("on", x === b));
+  $("prod").hidden = b.dataset.t !== "prod"; $("bal").hidden = b.dataset.t !== "bal";
+});
+
+/* ---------- productos ---------- */
+const opts = CATS.map(c => `<option value="${c.s}">${esc(c.n)}</option>`).join("");
+$("categoria").innerHTML = opts;
+$("fcat").innerHTML = `<option value="">Todas las categorías</option>` + opts;
+$("fcat").onchange = drawProds;
+$("imagen").oninput = e => { $("prev").src = e.target.value; $("prev").hidden = !e.target.value; };
+
+async function loadAll() {
+  prods = (await getDocs(collection(db, "productos"))).docs.map(d => ({ id: d.id, ...d.data() }));
+  movs = (await getDocs(collection(db, "movimientos"))).docs.map(d => ({ id: d.id, ...d.data() }));
+  drawProds(); drawBal();
+}
+function drawProds() {
+  const f = $("fcat").value, r = prods.filter(p => !f || p.categoria === f).sort((a, b) => a.nombre.localeCompare(b.nombre));
+  $("cnt").textContent = r.length;
+  $("tb").innerHTML = r.map(p => `<tr><td><img src="${esc(p.imagen)}" alt=""></td><td>${esc(p.nombre)}</td><td>${esc(catName(p.categoria))}</td><td>${money(p.precio)}</td><td>${p.stock}</td>
+    <td><button class="b ed" data-e="${p.id}">Editar</button> <button class="b del" data-d="${p.id}">Borrar</button></td></tr>`).join("") || `<tr><td colspan="6">Todavía no cargaste productos.</td></tr>`;
+}
+$("tb").onclick = async e => {
+  const id = e.target.dataset.e || e.target.dataset.d; if (!id) return;
+  const p = prods.find(x => x.id === id);
+  if (e.target.dataset.d) {
+    if (!confirm(`¿Borrar "${p.nombre}"?`)) return;
+    await deleteDoc(doc(db, "productos", id)); prods = prods.filter(x => x.id !== id); drawProds(); return;
+  }
+  editId = id; $("ftitle").textContent = "Editando producto"; $("cancel").hidden = false;
+  for (const k of ["nombre","categoria","precio","precioEfectivo","costo","stock","imagen","descripcion"]) $(k).value = p[k] ?? "";
+  $("imagen").dispatchEvent(new Event("input")); scrollTo(0, 0);
+};
+function resetForm() { $("fProd").reset(); editId = null; $("ftitle").textContent = "Nuevo producto"; $("cancel").hidden = true; $("prev").hidden = true; }
+$("cancel").onclick = resetForm;
+$("fProd").onsubmit = async e => {
+  e.preventDefault();
+  const num = k => $(k).value === "" ? null : Number($(k).value);
+  const data = { nombre: $("nombre").value.trim(), categoria: $("categoria").value, precio: num("precio"), precioEfectivo: num("precioEfectivo"),
+    costo: num("costo"), stock: num("stock") ?? 0, imagen: $("imagen").value.trim(), descripcion: $("descripcion").value.trim(), activo: true };
+  try {
+    if (editId) await setDoc(doc(db, "productos", editId), data, { merge: true });
+    else await addDoc(collection(db, "productos"), { ...data, creado: serverTimestamp() });
+    resetForm(); $("pmsg").textContent = "Producto guardado."; setTimeout(() => $("pmsg").textContent = "", 3000);
+    await loadAll();
+  } catch { $("pmsg").textContent = "No se pudo guardar. Revisá tu conexión y los permisos de Firebase."; }
+};
+
+/* ---------- balance ---------- */
+const iso = d => d.toLocaleDateString("sv");           // YYYY-MM-DD en hora local
+$("fecha").value = iso(new Date());
+function range() {
+  const n = new Date(), p = $("per").value;
+  if (p === "y") return [`${n.getFullYear()}-01-01`, `${n.getFullYear()}-12-31`];
+  if (p === "m") return [iso(new Date(n.getFullYear(), n.getMonth(), 1)), iso(new Date(n.getFullYear(), n.getMonth() + 1, 0))];
+  const lun = new Date(n); lun.setDate(n.getDate() - ((n.getDay() + 6) % 7));
+  const dom = new Date(lun); dom.setDate(lun.getDate() + 6); return [iso(lun), iso(dom)];
+}
+const inRange = () => { const [a, b] = range(); return movs.filter(m => m.fecha >= a && m.fecha <= b).sort((x, y) => y.fecha.localeCompare(x.fecha)); };
+$("per").onchange = drawBal;
+function drawBal() {
+  const r = inRange(), sum = t => r.filter(m => m.tipo === t).reduce((s, m) => s + m.monto, 0);
+  const i = sum("ingreso"), g = sum("gasto");
+  $("kIn").textContent = money(i); $("kOut").textContent = money(g);
+  $("kBal").textContent = money(i - g); $("kBal").className = i - g >= 0 ? "pos" : "neg";
+  const byYear = $("per").value === "y", b = {};
+  r.forEach(m => { const k = byYear ? m.fecha.slice(0, 7) : m.fecha; (b[k] ??= { ingreso: 0, gasto: 0 })[m.tipo] += m.monto; });
+  const keys = Object.keys(b).sort(), max = Math.max(1, ...keys.flatMap(k => [b[k].ingreso, b[k].gasto]));
+  $("chart").innerHTML = keys.map(k => `<div class="col"><div><i style="height:${b[k].ingreso / max * 100}%;background:#00ffcc" title="Ingresos ${money(b[k].ingreso)}"></i><i style="height:${b[k].gasto / max * 100}%;background:#ff5a5a" title="Gastos ${money(b[k].gasto)}"></i></div>${byYear ? k.slice(5) : k.slice(8)}</div>`).join("") || `<p style="color:#999">Sin movimientos en este período.</p>`;
+  $("tm").innerHTML = r.map(m => `<tr><td>${m.fecha}</td><td class="${m.tipo === "ingreso" ? "pos" : "neg"}">${m.tipo}</td><td>${esc(m.concepto)}</td><td>${money(m.monto)}</td><td><button class="b del" data-m="${m.id}">Borrar</button></td></tr>`).join("") || `<tr><td colspan="5">Sin movimientos en este período.</td></tr>`;
+}
+$("tm").onclick = async e => {
+  const id = e.target.dataset.m; if (!id || !confirm("¿Borrar este movimiento?")) return;
+  await deleteDoc(doc(db, "movimientos", id)); movs = movs.filter(m => m.id !== id); drawBal();
+};
+$("fMov").onsubmit = async e => {
+  e.preventDefault();
+  const m = { tipo: $("tipo").value, monto: Number($("monto").value), fecha: $("fecha").value, concepto: $("concepto").value.trim() };
+  const ref = await addDoc(collection(db, "movimientos"), m);
+  movs.push({ id: ref.id, ...m }); $("monto").value = ""; $("concepto").value = ""; drawBal();
+};
+
+/* ---------- descargas CSV (separador ; y BOM para que Excel lo abra bien) ---------- */
+function csv(nombre, filas) {
+  const t = "\ufeff" + filas.map(f => f.map(v => `"${String(v ?? "").replace(/"/g, '""')}"`).join(";")).join("\r\n");
+  const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(new Blob([t], { type: "text/csv;charset=utf-8" })), download: nombre });
+  a.click(); URL.revokeObjectURL(a.href);
+}
+$("csvProd").onclick = () => csv(`productos-${iso(new Date())}.csv`,
+  [["Nombre","Categoría","Precio","Precio efectivo","Costo","Stock","Imagen","Descripción"],
+   ...prods.map(p => [p.nombre, catName(p.categoria), p.precio, p.precioEfectivo, p.costo, p.stock, p.imagen, p.descripcion])]);
+$("csvBal").onclick = () => {
+  const r = inRange(), [a, b] = range(), sum = t => r.filter(m => m.tipo === t).reduce((s, m) => s + m.monto, 0);
+  csv(`balance-${a}_a_${b}.csv`, [["Fecha","Tipo","Concepto","Monto"], ...r.map(m => [m.fecha, m.tipo, m.concepto, m.monto]),
+    [], ["","","Total ingresos", sum("ingreso")], ["","","Total gastos", sum("gasto")], ["","","Balance", sum("ingreso") - sum("gasto")]]);
+};
+</script>
+</body></html>
