@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Top Gaming</title>
+<link rel="icon" href="https://res.cloudinary.com/dlgwd3dsq/image/upload/v1780847852/file_000000003adc720eb0f9d6399dffcbd4_4_tazjf5.png">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Chakra Petch',sans-serif;background:#0a0a0a;color:#fff}
+a{text-decoration:none;color:inherit}
+header{display:flex;justify-content:space-between;align-items:center;padding:4px 20px;background:linear-gradient(90deg,#000,#0a0a0a);position:sticky;top:0;z-index:1000}
+.logo img{height:80px;margin:-10px 0}
+ul.menu{display:flex;gap:25px;list-style:none}
+ul.menu a{font-size:16px;color:#ccc;padding:8px 12px;border-radius:6px;transition:.3s}
+ul.menu a:hover{color:#00ffff;background:#00ffff22}
+.presentation{width:100%;height:65vh;overflow:hidden}
+.presentation video{width:100%;height:100%;object-fit:cover}
+.categories,.catalogo{padding:40px 30px;text-align:center;max-width:1200px;margin:0 auto;scroll-margin-top:90px}
+h2.titulo{font-size:2rem;margin-bottom:30px;color:#00ffff}
+.category-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.category-card{position:relative;height:160px;border-radius:10px;overflow:hidden;border:1px solid #444;cursor:pointer;transition:.25s}
+.category-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.category-overlay{position:absolute;inset:0;background:linear-gradient(to top,#000,transparent);opacity:.9}
+.category-text{position:absolute;bottom:12px;width:100%;text-align:center;font-weight:bold;font-size:18px}
+.category-card:hover,.producto:hover{border-color:#00ffe1;box-shadow:0 0 10px #00ffe1}
+.search-box{position:relative;width:90%;max-width:500px;margin:0 auto 24px}
+.search-box input{width:100%;padding:12px 45px;border-radius:30px;border:2px solid #00ffff33;background:#111;color:#fff;font:inherit;font-size:16px;outline:none}
+.search-box input:focus{border-color:#00ffff;box-shadow:0 0 10px #00ffff55}
+.search-box i{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:#00ffff}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;gap:10px;text-align:left}
+.bar h2{font-size:20px;text-transform:uppercase}
+.btn-volver{background:transparent;border:1px solid #ff6a00;color:#ff6a00;padding:8px 14px;border-radius:10px;font:inherit;font-size:14px;cursor:pointer}
+.btn-volver:hover{background:#ff6a00;color:#000}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.producto{background:#1a1a1a;border:1px solid #444;border-radius:10px;padding:8px;cursor:pointer;transition:.25s;text-align:center}
+.producto .imagen{height:160px;background:center/contain no-repeat;border-radius:8px;margin-bottom:10px}
+.producto h3{font-size:15px;margin-bottom:6px}
+.precio-principal{font-size:20px;font-weight:bold}
+.precio-efectivo{color:#00ffcc;font-size:14px;margin-top:4px}
+.sin-stock{color:#ff5a5a;font-size:13px;margin-top:4px}
+.detalle{display:flex;flex-wrap:wrap;gap:20px;text-align:left}
+.detalle .img-box{flex:1 1 340px;background:#0f0f0f;border-radius:12px;padding:15px}
+.detalle .img-box img{width:100%;height:380px;object-fit:contain}
+.detalle .info{flex:1 1 320px}
+.detalle h2{font-size:22px;line-height:1.3;margin-bottom:15px}
+.detalle .precio-principal{font-size:28px;margin-bottom:6px}
+.desc{margin:18px 0;opacity:.85;line-height:1.5;white-space:pre-line}
+.btn-wa{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:#25d366;color:#fff;padding:13px;border-radius:10px;font-size:18px;font-weight:700;box-shadow:0 0 10px #25d36655}
+.btn-wa:hover{box-shadow:0 0 14px #25d366aa}
+.msg{padding:40px 0;color:#aaa}
+.footer{border-top:1px solid #222;margin-top:50px;padding:20px 15px;text-align:center;color:#bbb;scroll-margin-top:80px}
+.footer img{width:110px;filter:drop-shadow(0 0 1px #00ffe1)}
+.footer p{margin-top:8px}
+.footer-whatsapp{display:inline-block;margin-top:10px;background:#25d366;padding:8px 14px;border-radius:5px;color:#fff;font-weight:bold}
+.menu-toggle{display:none;flex-direction:column;justify-content:space-between;width:32px;height:26px;cursor:pointer}
+.menu-toggle span{height:4px;background:#fff;border-radius:4px}
+@media(min-width:768px){.category-grid{grid-template-columns:repeat(4,1fr)}.grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:768px){
+.menu-toggle{display:flex;z-index:1001}
+ul.menu{position:fixed;top:0;right:-100%;width:75%;height:100vh;background:rgba(10,10,10,.98);border-left:1px solid #1f2937;flex-direction:column;padding:100px 30px;transition:right .4s}
+ul.menu.active{right:0}
+.presentation{height:40vh}.detalle .img-box img{height:260px}.detalle h2{font-size:18px}}
+</style></head>
+<body>
+<header>
+  <a class="logo" href="#" onclick="goHome()"><img src="https://res.cloudinary.com/dlgwd3dsq/image/upload/v1759531309/TopGaming_logo_superior_ecyw9c.png" alt="Top Gaming"></a>
+  <nav>
+    <div class="menu-toggle" onclick="document.querySelector('.menu').classList.toggle('active')"><span></span><span></span><span></span></div>
+    <ul class="menu" onclick="this.classList.remove('active')">
+      <li><a href="#" onclick="goHome()">Inicio</a></li>
+      <li><a href="#categories" onclick="goHome()">Categorías</a></li>
+      <li><a href="#footer-contact">Contacto</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="presentation" id="hero"><video autoplay muted loop playsinline><source src="https://res.cloudinary.com/dlgwd3dsq/video/upload/v1759777514/Black_And_White_Glitch_Gaming_Channel_Youtube_Intro_20251006_154934_0001_zkzchu.mp4" type="video/mp4"></video></section>
+
+<section class="categories" id="categories">
+  <h2 class="titulo">Categorías</h2>
+  <div class="category-grid" id="catGrid"></div>
+</section>
+
+<section class="catalogo" id="catalogo" hidden></section>
+
+<footer class="footer" id="footer-contact">
+  <img src="https://res.cloudinary.com/dlgwd3dsq/image/upload/v1759531309/TopGaming_logo_superior_ecyw9c.png" alt="Top Gaming">
+  <p>Tu tienda gamer de confianza.</p>
+  <p><i class="fa-solid fa-phone"></i> +54 9 299 3258947 &nbsp; <i class="fa-regular fa-envelope"></i> contacto@topgaming.com</p>
+  <a class="footer-whatsapp" href="https://wa.me/5492993258947" target="_blank">WhatsApp</a>
+  <p style="font-size:13px;margin-top:18px">© 2026 Top Gaming - Todos los derechos reservados</p>
+</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getFirestore, collection, query, where, getDocs, getDoc, doc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyCs7_ChkZMxbhsy1ZxiZbvL8jF0XQd4VgI",
+  authDomain: "topgaming-3b378.firebaseapp.com",
+  projectId: "topgaming-3b378",
+  storageBucket: "topgaming-3b378.firebasestorage.app",
+  messagingSenderId: "146243956092",
+  appId: "1:146243956092:web:1cc1c0dd3d75b6bbfc88f9"
+};
+const WA = "5492993258947";
+const CATS = [{"s":"tarjeta grafica","n":"Tarjetas Graficas","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1759876173/hardware_vkmdf1.jpg"},{"s":"procesadores","n":"Procesadores","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1759876272/procesadores_mthwyl.jpg"},{"s":"teclado","n":"Teclados","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1759876967/3befb271101af2047238ca1441f7093a_zixh0x.jpg"},{"s":"memoria ram","n":"Memoria Ram","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1759876968/af72fe589dae7efc03954e2ce6ea5af8_du733t.jpg"},{"s":"motherboard","n":"Motherboard","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1759876968/dac7ab0cba38927274574d1ee7384e82_wg2jrk.jpg"},{"s":"mouse","n":"Mouse","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1759876969/2a1486a8e7c84836e19efad981bf4043_c8yoxo.jpg"},{"s":"joysticks","n":"Joystick","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1759937845/2b7f94bec77968b4d695e9623d5ec699_cxm7bu.jpg"},{"s":"notebooks","n":"Notebooks","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1759937868/c9859714f6d488ec3b7a3489e9294d99_gsnkgh.jpg"},{"s":"monitores","n":"Monitores","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1759937869/c231797fca8a424bd3643bc6016ee9a4_yyirnb.jpg"},{"s":"audio","n":"Auriculares","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1759937869/ae180a4d5beb2b02d92cd05b6e6565f5_w0kmcc.jpg"},{"s":"gabinetes","n":"Gabinetes","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1759937869/058c21bc0382258608f6b96c989bb20e_u620kr.jpg"},{"s":"refrigeracion","n":"Refrigeracion","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1764201087/e7484d877a3c767405b3929859c24537_ozav84.jpg"},{"s":"almacenamiento","n":"Almacenamiento","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1764279996/00d0dd0b1a0359bb77dc6622621301de_cpwg7v.jpg"},{"s":"computadoras","n":"Computadoras","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1768666642/4489306ccaa1d994eb7ce20d18b352fa_yomrik.jpg"},{"s":"gaming","n":"Gaming","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1768666655/7c6c3e4698685ea6e661a6e46e585d13_wy7jqd.jpg"},{"s":"smartwatch","n":"Smart Watch","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1768667993/bd8d8f287d5004397afc6b29a74f1f51_xj24nl.jpg"},{"s":"hardware","n":"Hardware","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1774882548/21eb9999a1ce6e39e01b62f306107263_roh7cd.jpg"},{"s":"imagen","n":"Imagen","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1774882534/6a6eafd7d49ccf13cd1a5fa991552423_fodw08.jpg"},{"s":"cables","n":"Cables","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1774882542/43b9d80acb8e994fdaeeeb13c223a234_bark1k.jpg"},{"s":"conectividad","n":"Conectividad","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1768666655/7c6c3e4698685ea6e661a6e46e585d13_wy7jqd.jpg"},{"s":"energia","n":"Energia","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1768667107/6d0a9e031b180c31addc0f1a98e668b3_w97hvs.jpg"},{"s":"impresion","n":"impresión","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1768667298/4a34edf685cb08c5f17d92093b11d03f_tjy8va.jpg"},{"s":"seguridad","n":"Seguridad","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1768667975/72068838176cc3993741f48158c38f9e_z1xgid.jpg"},{"s":"herramientas","n":"Herramientas","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1768668004/0e37e7bba4b33836214512ed03c0a244_qog3br.jpg"},{"s":"outlet","n":"Outlet","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1774647631/172de23d0f62554ff8de02ff7f702c4a_vowf4s.jpg"},{"s":"perifericos","n":"Perifericos","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1774646955/00edf234cf09a2f202bfe26aa1ae14a5_hmx6qb.jpg"},{"s":"telefonia","n":"Telefonia","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1774646579/ec1cf9849918de03ce0c828d75aacda4_k1os76.jpg"},{"s":"varios","n":"Varios","i":"https://res.cloudinary.com/dlgwd3dsq/image/upload/v1774647306/c8d451d821ae5e76f88b89227f099e1d_v9g1nm.jpg"}];
+const db = getFirestore(initializeApp(firebaseConfig));
+const $ = id => document.getElementById(id);
+const money = n => "$" + Number(n || 0).toLocaleString("es-AR");
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let items = [], cat = null;
+
+$("catGrid").innerHTML = CATS.map(c => `<div class="category-card" onclick="location.hash='c=${encodeURIComponent(c.s)}'">
+  <img src="${c.i}" alt="${esc(c.n)}" loading="lazy"><div class="category-overlay"></div><p class="category-text">${esc(c.n)}</p></div>`).join("");
+
+function show(catalog) {
+  $("catalogo").hidden = !catalog;
+  $("hero").hidden = $("categories").hidden = catalog;
+  if (catalog) $("catalogo").scrollIntoView();
+}
+window.goHome = () => { history.pushState("", "", location.pathname); route(); };
+
+function card(p) {
+  return `<div class="producto" onclick="location.hash='p=${p.id}'">
+    <div class="imagen" style="background-image:url('${esc(p.imagen)}')"></div>
+    <h3>${esc(p.nombre)}</h3>
+    <div class="precio-principal">${money(p.precio)}</div>
+    ${p.precioEfectivo ? `<div class="precio-efectivo">${money(p.precioEfectivo)} en efectivo</div>` : ""}
+    ${p.stock <= 0 ? `<div class="sin-stock">Consultar stock</div>` : ""}</div>`;
+}
+
+async function showCategory(slug) {
+  const c = CATS.find(x => x.s === slug); cat = slug; show(true);
+  $("catalogo").innerHTML = `<div class="bar"><h2>${esc(c ? c.n : slug)}</h2><button class="btn-volver" onclick="goHome()">Volver</button></div>
+    <div class="search-box"><i class="fa fa-search"></i><input id="q" placeholder="Buscar en ${esc(c ? c.n : slug)}"></div>
+    <div class="grid" id="lista"><p class="msg">Cargando productos…</p></div>`;
+  try {
+    const snap = await getDocs(query(collection(db, "productos"), where("categoria", "==", slug)));
+    items = snap.docs.map(d => ({ id: d.id, ...d.data() })).filter(p => p.activo !== false).sort((a, b) => a.nombre.localeCompare(b.nombre));
+  } catch (e) { $("lista").innerHTML = `<p class="msg">No pudimos cargar los productos. Probá de nuevo en un momento.</p>`; return; }
+  const draw = t => {
+    const r = items.filter(p => p.nombre.toLowerCase().includes(t.toLowerCase()));
+    $("lista").innerHTML = r.length ? r.map(card).join("") : `<p class="msg" style="grid-column:1/-1">No hay productos en esta categoría todavía.</p>`;
+  };
+  draw(""); $("q").oninput = e => draw(e.target.value);
+}
+
+async function showProduct(id) {
+  show(true);
+  $("catalogo").innerHTML = `<p class="msg">Cargando…</p>`;
+  const s = await getDoc(doc(db, "productos", id));
+  if (!s.exists()) { $("catalogo").innerHTML = `<p class="msg">Este producto ya no está disponible.</p><button class="btn-volver" onclick="goHome()">Ir al inicio</button>`; return; }
+  const p = s.data(), c = CATS.find(x => x.s === p.categoria);
+  const txt = `Hola! Quiero consultar stock y precio de: ${p.nombre}\n${location.href}`;
+  $("catalogo").innerHTML = `<div class="bar"><h2>${esc(c ? c.n : "")}</h2>
+    <button class="btn-volver" onclick="${c ? `location.hash='c=${encodeURIComponent(c.s)}'` : "goHome()"}">Volver</button></div>
+    <div class="detalle"><div class="img-box"><img src="${esc(p.imagen)}" alt="${esc(p.nombre)}"></div>
+    <div class="info"><h2>${esc(p.nombre)}</h2>
+      <div class="precio-principal">${money(p.precio)}</div>
+      ${p.precioEfectivo ? `<div class="precio-efectivo">${money(p.precioEfectivo)} en efectivo</div>` : ""}
+      ${p.descripcion ? `<p class="desc">${esc(p.descripcion)}</p>` : ""}
+      <a class="btn-wa" target="_blank" href="https://wa.me/${WA}?text=${encodeURIComponent(txt)}"><i class="fab fa-whatsapp"></i> Consultar stock y precio</a>
+    </div></div>`;
+  scrollTo(0, 0);
+}
+
+function route() {
+  const h = decodeURIComponent(location.hash.slice(1));
+  if (h.startsWith("c=")) showCategory(h.slice(2));
+  else if (h.startsWith("p=")) showProduct(h.slice(2));
+  else show(false);
+}
+addEventListener("hashchange", () => { if (location.hash !== "#footer-contact" && location.hash !== "#categories") route(); });
+route();
+</script>
+</body></html>
